@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+#include <chrono>
+
+namespace dbclt
+{
+// date range: -28164-12-21T19:59:05.224192 to 32103-01-10T04:00:54.775807
+using datetime = std::chrono::time_point< std::chrono::system_clock, std::chrono::microseconds >;
+
+}  // namespace dbclt

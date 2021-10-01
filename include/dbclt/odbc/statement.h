@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,41 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+template< typename BE >
+class result;
+
+template< typename BE >
+class statement;
+
+namespace odbc
+{
+class session_impl;
+
+class statement_impl
+{
+public:
+	using session_type = dbclt::session< session_impl >;
+	using result_type = result< result_impl >;
+	using recordset_type = typename result_type::recordset_type;
+
+public:
+	statement_impl( session_impl& session );
+
+	result_type execute( const std::string& stmt );
+	recordset_type query( const std::string& stmt );
+
+private:
+	session_impl& m_session;
+	statement_ptr m_stmt;
+};
+
+using statement = dbclt::statement< statement_impl >;
+
+}  // namespace odbc
+}  // namespace dbclt

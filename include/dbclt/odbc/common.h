@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,64 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+namespace odbc
+{
+template< typename Handle, SQLSMALLINT Type >
+class sql_handle
+{
+public:
+	sql_handle( ) : m_handle( SQL_NULL_HANDLE )
+	{
+	}
+
+	sql_handle( Handle h ) : m_handle( h )
+	{
+	}
+
+	~sql_handle( );
+
+	Handle release( );
+	Handle& handle( )
+	{
+		return m_handle;
+	}
+	operator Handle( )
+	{
+		return m_handle;
+	}
+	SQLSMALLINT type( ) const
+	{
+		return Type;
+	}
+
+private:
+	Handle m_handle;
+};
+
+using env_ptr = std::shared_ptr< sql_handle< HENV, SQL_HANDLE_ENV > >;
+using conn_ptr = std::shared_ptr< sql_handle< HDBC, SQL_HANDLE_DBC > >;
+using statement_ptr = std::shared_ptr< sql_handle< HSTMT, SQL_HANDLE_STMT > >;
+
+template< typename Handle, SQLSMALLINT Type >
+inline sql_handle< Handle, Type >::~sql_handle( )
+{
+	if( m_handle != SQL_NULL_HANDLE )
+		SQLFreeHandle( Type, m_handle );
+}
+
+template< typename Handle, SQLSMALLINT Type >
+inline Handle sql_handle< Handle, Type >::release( )
+{
+	Handle tmp = m_handle;
+	m_handle = SQL_NULL_HANDLE;
+	return tmp;
+}
+
+}  // namespace odbc
+}  // namespace dbclt

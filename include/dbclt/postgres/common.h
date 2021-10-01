@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,50 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+#include <libpq-fe.h>
+
+#define POSTGRESQL_INTEGER_DATETIME 1
+
+namespace dbclt
+{
+namespace postgres
+{
+class conn_ptr : public std::shared_ptr< PGconn >
+{
+public:
+	conn_ptr( )
+	{
+	}
+	conn_ptr( PGconn* conn ) : std::shared_ptr< PGconn >( conn, PQfinish )
+	{
+	}
+};
+
+class result_ptr : public std::shared_ptr< PGresult >
+{
+public:
+	result_ptr( )
+	{
+	}
+	result_ptr( PGresult* result ) : std::shared_ptr< PGresult >( result, PQclear )
+	{
+	}
+};
+
+class notify_ptr : public std::shared_ptr< PGnotify >
+{
+public:
+	notify_ptr( )
+	{
+	}
+	notify_ptr( PGnotify* notify ) : std::shared_ptr< PGnotify >( notify, PQfreemem )
+	{
+	}
+};
+
+}  // namespace postgres
+}  // namespace dbclt

@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,35 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+template< typename BE >
+class result
+{
+public:
+	using backend_type = BE;
+	using result_ptr = std::shared_ptr< backend_type >;
+	using recordsets_type = typename backend_type::recordsets_type;
+	using recordset_type = typename backend_type::recordset_type;
+
+public:
+	result( ) = default;
+	result( result_ptr impl );
+
+	size_t affected_count( ) const;
+	int return_value( ) const;
+	recordsets_type recordsets( );
+
+	backend_type& backend( );
+
+private:
+	result_ptr m_impl;
+	std::optional< recordset_type > m_recordset;
+	std::optional< recordsets_type > m_recordsets;
+};
+
+}  // namespace dbclt

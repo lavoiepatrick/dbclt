@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,42 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+template< typename backend >
+inline transaction< backend >::transaction( session_type& session ) : m_session( session )
+{
+	m_session.begin_transaction( );
+	m_inTransaction = true;
+}
+
+template< typename backend >
+inline transaction< backend >::~transaction( )
+{
+	if( m_inTransaction )
+		rollback( );
+}
+
+template< typename backend >
+inline void transaction< backend >::commit( )
+{
+	if( !m_inTransaction )
+		throw data_exception( "Cannot commit transaction, already handled." );
+	m_session.commit_transaction( );
+	m_inTransaction = false;
+}
+
+template< typename backend >
+inline void transaction< backend >::rollback( )
+{
+	if( !m_inTransaction )
+		throw data_exception( "Cannot rollback transaction, already handled." );
+	m_session.rollback_transaction( );
+	m_inTransaction = false;
+}
+
+}  // namespace dbclt

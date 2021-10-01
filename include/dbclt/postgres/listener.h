@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,34 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+#ifndef WIN32
+
+namespace dbclt
+{
+namespace postgres
+{
+class session_impl;
+
+class listener
+{
+public:
+	bool operator( )( );
+
+private:
+	listener( conn_ptr conn );
+
+private:
+	conn_ptr m_conn;
+	notify_ptr m_notify;
+
+	friend session_impl;
+};
+
+}  // namespace postgres
+}  // namespace dbclt
+
+#endif

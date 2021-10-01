@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,47 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+template< typename IT >
+class range
+{
+public:
+	using iterator = IT;
+
+public:
+	range( ) = default;
+	range( const iterator& begin, const iterator& end );
+
+	iterator begin( );
+	iterator end( );
+
+private:
+	iterator m_begin;
+	iterator m_end;
+};
+
+template< typename IT >
+inline range< IT >::range( const iterator& begin, const iterator& end )
+	: m_begin( begin ),
+	  m_end( end )
+{
+}
+
+template< typename IT >
+inline typename range< IT >::iterator range< IT >::begin( )
+{
+	return m_begin;
+}
+
+template< typename IT >
+inline typename range< IT >::iterator range< IT >::end( )
+{
+	return m_end;
+}
+
+}  // namespace dbclt

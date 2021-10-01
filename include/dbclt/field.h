@@ -1,3 +1,4 @@
+/*
 MIT License
 
 Copyright (c) 2021 Patrick Lavoie
@@ -19,3 +20,60 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+*/
+
+#pragma once
+
+namespace dbclt
+{
+class field
+{
+public:
+	enum class type
+	{
+		db_bool,
+		db_string,
+		db_int8,
+		db_int16,
+		db_int32,
+		db_int64,
+		db_float,
+		db_double,
+		db_binary,
+		db_date,
+		db_datetime
+	};
+
+public:
+	field( );
+	field( const std::string& name, type type );
+
+	const std::string& name( ) const;
+	type db_type( ) const;
+
+private:
+	std::string m_name;
+	type m_type;
+};
+
+using fields_type = std::vector< field >;
+
+inline field::field( )
+{
+}
+
+inline field::field( const std::string& name, type type ) : m_name( name ), m_type( type )
+{
+}
+
+inline const std::string& field::name( ) const
+{
+	return m_name;
+}
+
+inline field::type field::db_type( ) const
+{
+	return m_type;
+}
+
+}  // namespace dbclt
